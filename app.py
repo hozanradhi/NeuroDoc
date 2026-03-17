@@ -1,17 +1,28 @@
 import streamlit as st
 import google.generativeai as genai
 
-# Sätt upp designen på webbsidan
-st.set_page_config(page_title="NeuroDoc", page_icon="🧠")
-st.title("🧠 NeuroDoc")
-st.write("Din smarta medicinska assistent för neurointervention och neuroradiologi.")
+# --- 1. SÄTT UPP SIDAN OCH SIDOPANELEN ---
+st.set_page_config(page_title="NeuroDoc", page_icon="🧠", layout="centered")
 
-# Hämta den nya säkra nyckeln från Streamlits kassaskåp
+with st.sidebar:
+    st.title("⚙️ Om NeuroDoc")
+    st.info("Denna assistent är specialiserad på neurointervention och neuroradiologi. Den hjälper dig att strukturera dikterade anteckningar.")
+    st.divider()
+    if st.button("🗑️ Rensa chatt (Ny patient)"):
+        if "chat" in st.session_state:
+            del st.session_state.chat
+        st.success("Chatten är rensad!")
+
+# --- 2. HUVUDSIDAN ---
+st.title("🧠 NeuroDoc")
+st.caption("Din smarta medicinska assistent för neurointervention.")
+
 genai.configure(api_key=st.secrets["GEMINI_API_KEY"])
 
-# Berätta för AI:n vem den är (Viktigt att behålla de tre citattecknen """ i början och slutet!)
+# --- 3. DINA INSTRUKTIONER ---
 system_instruction = """
 Du är "NeuroDoc", en avancerad medicinsk assistent specialiserad på neurointervention och neuroradiologi. Din uppgift är att omvandla ostrukturerade, dikterade anteckningar från läkare till strukturerad data och formella operationsberättelser.
+
 KONTEXT:
 
 Du förstår terminologi för trombektomier, aneurysm-coiling, stentning och angiografier. Du känner till devices som Solitaire, Sofia, Penumbra, Fred, Web etc. Du förstår TICI-skalan och komplikationer.
@@ -91,29 +102,24 @@ REGLER:
 -om man skriver på annat språk så vill jag att du överstätter det till svenska.
 """
 
-# Ladda in den bekräftade Pro-modellen från din lista
+# --- 4. AI-LOGIKEN ---
 model = genai.GenerativeModel(
-    model_name="gemini-2.5-flash", 
+    model_name="gemini-2.5-flash",
     system_instruction=system_instruction
 )
 
-# Starta ett minne för chatten så att den kommer ihåg vad ni pratat om
 if "chat" not in st.session_state:
     st.session_state.chat = model.start_chat(history=[])
 
-# Visa tidigare meddelanden på skärmen
 for message in st.session_state.chat.history:
     role = "assistant" if message.role == "model" else "user"
     with st.chat_message(role):
         st.markdown(message.parts[0].text)
 
-# Skapa rutan där kollegorna skriver sin fråga
 if prompt := st.chat_input("Skriv till NeuroDoc här..."):
-    # Visa kollegans fråga
     with st.chat_message("user"):
         st.markdown(prompt)
-    
-    # Skicka frågan till NeuroDoc och visa svaret
+
     with st.chat_message("assistant"):
         response = st.session_state.chat.send_message(prompt)
         st.markdown(response.text)
