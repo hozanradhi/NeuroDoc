@@ -7,8 +7,7 @@ st.title("🧠 NeuroDoc")
 st.write("Din smarta assistent på jobbet.")
 
 # Hämta API-nyckeln (vi gömmer den säkert i Streamlits inställningar senare)
-genai.configure(api_key=st.secrets[AIzaSyBxbDcg2B3PcEMs12cteMGbgYisHnHxdOs])
-
+genai.configure(api_key=st.secrets["GEMINI_API_KEY"])
 # Berätta för AI:n vem den är
 system_instruction = """Du är "NeuroDoc", en avancerad medicinsk assistent specialiserad på neurointervention och neuroradiologi. Din uppgift är att omvandla ostrukturerade, dikterade anteckningar från läkare till strukturerad data och formella operationsberättelser.
 
