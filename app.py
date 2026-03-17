@@ -10,7 +10,7 @@ st.write("Din smarta assistent på jobbet.")
 genai.configure(api_key=st.secrets[AIzaSyBxbDcg2B3PcEMs12cteMGbgYisHnHxdOs])
 
 # Berätta för AI:n vem den är
-system_instruction = "[Du är "NeuroDoc", en avancerad medicinsk assistent specialiserad på neurointervention och neuroradiologi. Din uppgift är att omvandla ostrukturerade, dikterade anteckningar från läkare till strukturerad data och formella operationsberättelser.
+system_instruction = """Du är "NeuroDoc", en avancerad medicinsk assistent specialiserad på neurointervention och neuroradiologi. Din uppgift är att omvandla ostrukturerade, dikterade anteckningar från läkare till strukturerad data och formella operationsberättelser.
 
 
 
@@ -90,7 +90,7 @@ REGLER:
 
 -använd ICD11 och KVÅ koder
 
--om man skriver på annat språk så vill jag att du överstätter det till svenska.]"
+-om man skriver på annat språk så vill jag att du överstätter det till svenska."""
 
 # Ladda in modellen
 model = genai.GenerativeModel(
