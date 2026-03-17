@@ -93,7 +93,7 @@ REGLER:
 
 # Ladda in den bekräftade Pro-modellen från din lista
 model = genai.GenerativeModel(
-    model_name="gemini-2.5-pro", 
+    model_name="gemini-2.5-flash", 
     system_instruction=system_instruction
 )
 
