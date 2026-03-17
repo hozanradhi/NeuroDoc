@@ -93,7 +93,7 @@ REGLER:
 
 # Ladda in modellen
 model = genai.GenerativeModel(
-    model_name="gemini-1.5-flash", # En snabb och smart modell för chatt
+    model_name="gemini-1.5-pro", # En snabb och smart modell för chatt
     system_instruction=system_instruction
 )
 
